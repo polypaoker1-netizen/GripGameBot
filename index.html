@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VIRUS GAME - СЛОВИ ЗАЙЦА</title>
+    <title>VIRUS GAME</title>
     <style>
         * {
             margin: 0;
@@ -13,304 +13,24 @@
         }
 
         body {
-            background: linear-gradient(180deg, #1a1b2f 0%, #2a2b4a 100%);
+            background: #0a0a14;
+            color: white;
             min-height: 100vh;
-            color: white;
-            padding: 16px;
         }
 
-        /* Шапка как на скрине */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .referral {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .referral span {
-            color: #ffd700;
-            font-weight: bold;
-            margin-left: 5px;
-        }
-
-        .referral small {
-            opacity: 0.7;
-            font-size: 12px;
-            margin-left: 5px;
-        }
-
-        /* Баланс */
-        .balance-card {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .balance-label {
-            opacity: 0.8;
-            font-size: 14px;
-        }
-
-        .balance-amount {
-            font-size: 28px;
-            font-weight: bold;
-            color: #ffd700;
-        }
-
-        .balance-amount::after {
-            content: " ★";
-            font-size: 24px;
-        }
-
-        /* Секции как на скрине */
-        .section {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .section-title {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 12px;
-            color: #8b9aff;
-            text-transform: uppercase;
-        }
-
-        .inventory-empty {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            color: rgba(255, 255, 255, 0.5);
-            font-style: italic;
-        }
-
-        /* Игровое поле */
-        .game-area {
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 24px;
-            padding: 24px;
-            margin-bottom: 20px;
-            border: 2px solid rgba(255, 215, 0, 0.3);
-        }
-
-        .multiplier {
-            font-size: 64px;
-            font-weight: bold;
-            text-align: center;
-            margin: 20px 0;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
-            color: #ffd700;
-        }
-
-        .rabbit-container {
-            position: relative;
-            height: 100px;
-            margin: 30px 0;
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 50px;
-            overflow: hidden;
-        }
-
-        .rabbit {
-            position: absolute;
-            left: 0;
-            font-size: 60px;
-            transition: left 0.1s linear;
-            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5));
-        }
-
-        .rabbit.running {
-            animation: bounce 0.3s infinite alternate;
-        }
-
-        .rabbit.crashed {
-            transform: rotate(90deg);
-            filter: grayscale(1);
-            opacity: 0.5;
-        }
-
-        @keyframes bounce {
-            from { transform: translateY(0); }
-            to { transform: translateY(-10px); }
-        }
-
-        .track {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, #4caf50, #ffd700);
-            transform-origin: left;
-        }
-
-        /* Элементы управления */
-        .controls {
-            display: flex;
-            gap: 12px;
-            margin: 20px 0;
-        }
-
-        .bet-input {
-            flex: 2;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 215, 0, 0.3);
-            border-radius: 16px;
-            padding: 16px;
-            color: white;
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .bet-input:focus {
-            outline: none;
-            border-color: #ffd700;
-        }
-
-        .btn {
-            flex: 1;
-            border: none;
-            border-radius: 16px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-transform: uppercase;
-            padding: 16px;
-        }
-
-        .btn-start {
-            background: linear-gradient(135deg, #4caf50, #45a049);
-            color: white;
-            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
-        }
-
-        .btn-cashout {
-            background: linear-gradient(135deg, #ffd700, #ffaa00);
-            color: black;
-            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
-        }
-
-        .btn:active {
-            transform: scale(0.95);
-        }
-
-        .btn:disabled {
-            opacity: 0.5;
-            pointer-events: none;
-        }
-
-        /* Список игроков */
-        .players-list {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 16px;
-            padding: 16px;
-        }
-
-        .players-header {
-            display: flex;
-            justify-content: space-between;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 12px;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-        }
-
-        .player-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .player-name {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .player-name span {
-            width: 30px;
-            height: 30px;
-            background: rgba(255, 215, 0, 0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .player-bet {
-            color: #ffd700;
-            font-weight: bold;
-        }
-
-        .player-win {
-            color: #4caf50;
-            font-weight: bold;
-        }
-
-        /* Навигация */
-        .nav-menu {
-            display: flex;
-            justify-content: space-around;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 30px;
-            padding: 8px;
-            margin-top: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 12px;
-            cursor: pointer;
-            padding: 8px 16px;
-            border-radius: 20px;
-            transition: all 0.2s;
-        }
-
-        .nav-item.active {
-            background: rgba(255, 215, 0, 0.2);
-            color: #ffd700;
-        }
-
-        .nav-item span {
-            font-size: 20px;
-            margin-bottom: 4px;
-        }
-
-        /* Загрузка */
-        .loading-screen {
+        /* Экран загрузки */
+        #loadingScreen {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: #1a1b2f;
+            background: #0a0a14;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
+            z-index: 10000;
         }
 
         .virus-icon {
@@ -324,20 +44,14 @@
             font-size: 32px;
             font-weight: bold;
             color: #ffd700;
-            letter-spacing: 2px;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            margin-bottom: 20px;
         }
 
         .progress-bar {
             width: 200px;
             height: 4px;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255,255,255,0.1);
             border-radius: 2px;
-            margin-top: 20px;
             overflow: hidden;
         }
 
@@ -345,17 +59,334 @@
             height: 100%;
             width: 0%;
             background: #ffd700;
-            animation: load 2s linear forwards;
+            animation: fill 2s linear forwards;
         }
 
-        @keyframes load {
+        @keyframes fill {
             to { width: 100%; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        /* Основной контент */
+        #mainContent {
+            display: none;
+            padding-bottom: 80px;
+        }
+
+        /* Шапка */
+        .header {
+            background: rgba(0,0,0,0.5);
+            padding: 20px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bot-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #8b9aff;
+        }
+
+        .bot-name small {
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .referral-box {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 8px 16px;
+            text-align: center;
+        }
+
+        .referral-box .label {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+        .referral-box .value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        /* Баланс */
+        .balance-card {
+            background: rgba(255,255,255,0.05);
+            margin: 16px;
+            padding: 16px;
+            border-radius: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(255,215,0,0.2);
+        }
+
+        .balance-amount {
+            font-size: 32px;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .balance-amount::after {
+            content: " ★";
+        }
+
+        /* Секции */
+        .section {
+            background: rgba(255,255,255,0.03);
+            margin: 16px;
+            padding: 16px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #8b9aff;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        /* Инвентарь */
+        .inventory-empty {
+            background: rgba(255,255,255,0.02);
+            padding: 20px;
+            text-align: center;
+            color: rgba(255,255,255,0.3);
+            border-radius: 12px;
+        }
+
+        /* Таймер */
+        .timer-box {
+            background: rgba(255,215,0,0.1);
+            border: 1px solid rgba(255,215,0,0.3);
+            border-radius: 30px;
+            padding: 8px 16px;
+            display: inline-block;
+        }
+
+        .timer {
+            color: #ffd700;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+
+        /* Правила */
+        .rule-item {
+            background: rgba(0,0,0,0.3);
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .rule-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(139,154,255,0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .rule-title {
+            font-weight: bold;
+            color: #8b9aff;
+        }
+
+        .new-badge {
+            background: #ffd700;
+            color: black;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 10px;
+            margin-left: 8px;
+        }
+
+        /* Игра */
+        .game-area {
+            background: rgba(0,0,0,0.5);
+            margin: 16px;
+            padding: 20px;
+            border-radius: 24px;
+            border: 2px solid rgba(255,215,0,0.2);
+        }
+
+        .multiplier {
+            font-size: 48px;
+            font-weight: bold;
+            text-align: center;
+            color: #ffd700;
+            margin: 20px 0;
+        }
+
+        .rabbit-container {
+            position: relative;
+            height: 100px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 50px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .rabbit {
+            position: absolute;
+            left: 0;
+            font-size: 60px;
+            transition: left 0.1s linear;
+            animation: hop 0.3s infinite alternate;
+        }
+
+        @keyframes hop {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
+
+        .progress-track {
+            position: absolute;
+            bottom: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #4caf50, #ffd700);
+            width: 0%;
+        }
+
+        /* Управление */
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .bet-input {
+            flex: 2;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,215,0,0.3);
+            border-radius: 16px;
+            padding: 16px;
+            color: white;
+            font-size: 18px;
+        }
+
+        .btn {
+            flex: 1;
+            border: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            padding: 16px;
+        }
+
+        .btn-start {
+            background: #4caf50;
+            color: white;
+        }
+
+        .btn-cashout {
+            background: #ffd700;
+            color: black;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* Список игроков */
+        .players-list {
+            background: rgba(0,0,0,0.3);
+            margin: 16px;
+            padding: 16px;
+            border-radius: 16px;
+        }
+
+        .players-header {
+            display: flex;
+            justify-content: space-between;
+            color: rgba(255,255,255,0.5);
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .player-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .player-avatar {
+            width: 30px;
+            height: 30px;
+            background: rgba(255,215,0,0.2);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 8px;
+        }
+
+        .player-bet {
+            color: #ffd700;
+        }
+
+        .player-win {
+            color: #4caf50;
+        }
+
+        /* Нижнее меню */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #0f0f1a;
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0 16px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: rgba(255,255,255,0.5);
+            font-size: 11px;
+            cursor: pointer;
+            padding: 8px 12px;
+        }
+
+        .nav-item.active {
+            color: #ffd700;
+        }
+
+        .nav-item span {
+            font-size: 22px;
+            margin-bottom: 4px;
         }
     </style>
 </head>
 <body>
     <!-- Экран загрузки -->
-    <div class="loading-screen" id="loading">
+    <div id="loadingScreen">
         <div class="virus-icon">🦠</div>
         <div class="loading-text">GripGameBot</div>
         <div class="progress-bar">
@@ -364,28 +395,70 @@
     </div>
 
     <!-- Основной контент -->
-    <div id="gameContent" style="display: none;">
-        <!-- Шапка с рефералами -->
+    <div id="mainContent">
+        <!-- Шапка -->
         <div class="header">
-            <div class="referral">
-                REFERRAL <span>234</span> <small>2</small>
-            </div>
-            <div class="referral" style="background: rgba(255, 215, 0, 0.2);">
-                🏆 ТОП
+            <div class="header-top">
+                <div class="bot-name">
+                    GripGameBot
+                    <small>@GripGameBot</small>
+                </div>
+                <div class="referral-box">
+                    <div class="label">REFERRAL</div>
+                    <div class="value">234</div>
+                    <div class="label">2</div>
+                </div>
             </div>
         </div>
 
         <!-- Баланс -->
         <div class="balance-card">
-            <span class="balance-label">💰 Баланс</span>
+            <span>💰 Баланс</span>
             <span class="balance-amount" id="balance">1000</span>
         </div>
 
         <!-- Инвентарь -->
         <div class="section">
             <div class="section-title">ИНВЕНТАРЬ</div>
-            <div class="inventory-empty">
-                🎒 Инвентарь пуст
+            <div class="inventory-empty">Инвентарь пуст</div>
+        </div>
+
+        <!-- Рулетка -->
+        <div class="section">
+            <div class="section-title">РУЛЕТКА</div>
+            <div class="timer-box">
+                ⏰ БЕСПЛАТНОЕ ВРАЩЕНИЕ ЧЕРЕЗ:
+                <span class="timer" id="timer">4:09:25</span>
+            </div>
+        </div>
+
+        <!-- Правила CRASH -->
+        <div class="section">
+            <div class="section-title">ПРАВИЛА CRASH</div>
+            <div class="rule-item">
+                <div class="rule-icon">🚀</div>
+                <div class="rule-title">РАКЕТА ВЗЛЕТАЕТ — ЗАБИРАЙ ВЫИГРЫШ!</div>
+            </div>
+        </div>
+
+        <!-- Правила МАЙНКРАФТ -->
+        <div class="section">
+            <div class="section-title">ПРАВИЛА МАЙНКРАФТ</div>
+            <div class="rule-item">
+                <div class="rule-icon">⛏️</div>
+                <div class="rule-title">
+                    НОВИНКА!
+                    <span class="new-badge">NEW</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Русская рулетка -->
+        <div class="section">
+            <div class="section-title">РУССКАЯ РУЛЕТКА 50/50</div>
+            <div class="rule-item">
+                <div class="rule-icon">🎲</div>
+                <div class="rule-title">ПОЛУЧИ ПОДАРОК ЗА ПОЛОВИНУ ОТ ЕГО СТОИМОСТИ!</div>
             </div>
         </div>
 
@@ -393,52 +466,49 @@
         <div class="game-area">
             <div class="multiplier" id="multiplier">1.00x</div>
             
-            <div class="rabbit-container" id="rabbitContainer">
+            <div class="rabbit-container">
                 <div class="rabbit" id="rabbit">🐇</div>
-                <div class="track" id="track" style="width: 0%"></div>
+                <div class="progress-track" id="progressTrack"></div>
             </div>
 
             <div class="controls">
-                <input type="number" id="betAmount" class="bet-input" placeholder="Ставка ★" min="10" value="10">
+                <input type="number" id="betInput" class="bet-input" value="10" min="10" placeholder="Ставка ★">
                 <button class="btn btn-start" id="startBtn">СТАРТ</button>
                 <button class="btn btn-cashout" id="cashoutBtn" disabled>ЗАБРАТЬ</button>
             </div>
         </div>
 
-        <!-- Сейчас играют -->
-        <div class="section">
-            <div class="section-title">⚡ СЕЙЧАС ИГРАЮТ</div>
-            <div class="players-list" id="playersList">
-                <div class="players-header">
-                    <span>Игрок</span>
-                    <span>Ставка → Выигрыш</span>
-                </div>
-                <!-- Динамически заполняется -->
+        <!-- Список игроков -->
+        <div class="players-list">
+            <div class="players-header">
+                <span>Игрок</span>
+                <span>Ставка → Выигрыш</span>
             </div>
+            <div id="playersList"></div>
         </div>
+    </div>
 
-        <!-- Нижнее меню -->
-        <div class="nav-menu">
-            <div class="nav-item active" onclick="switchTab('main')">
-                <span>🏠</span>
-                <span>Главная</span>
-            </div>
-            <div class="nav-item" onclick="switchTab('tasks')">
-                <span>📋</span>
-                <span>Задания</span>
-            </div>
-            <div class="nav-item" onclick="switchTab('roulette')">
-                <span>🎲</span>
-                <span>Рулетка</span>
-            </div>
-            <div class="nav-item" onclick="switchTab('shop')">
-                <span>🛒</span>
-                <span>Магазин</span>
-            </div>
-            <div class="nav-item" onclick="switchTab('history')">
-                <span>📊</span>
-                <span>История</span>
-            </div>
+    <!-- Нижнее меню -->
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="switchTab('main')">
+            <span>🏠</span>
+            <span>Главная</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('tasks')">
+            <span>📋</span>
+            <span>Задания</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('roulette')">
+            <span>🎲</span>
+            <span>Рулетка</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('shop')">
+            <span>🛒</span>
+            <span>Магазин</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('history')">
+            <span>📊</span>
+            <span>История</span>
         </div>
     </div>
 
@@ -448,31 +518,57 @@
         tg.ready();
         tg.expand();
 
-        // Состояние
+        // Простые переменные
         let balance = 1000;
         let gameActive = false;
-        let multiplier = 1.0;
-        let interval = null;
+        let currentMultiplier = 1.0;
+        let gameInterval = null;
         let currentBet = 0;
 
-        // Элементы
-        const loading = document.getElementById('loading');
-        const gameContent = document.getElementById('gameContent');
+        // Элементы DOM
+        const loadingScreen = document.getElementById('loadingScreen');
+        const mainContent = document.getElementById('mainContent');
         const balanceEl = document.getElementById('balance');
         const multiplierEl = document.getElementById('multiplier');
         const rabbit = document.getElementById('rabbit');
-        const track = document.getElementById('track');
+        const progressTrack = document.getElementById('progressTrack');
         const startBtn = document.getElementById('startBtn');
         const cashoutBtn = document.getElementById('cashoutBtn');
-        const betInput = document.getElementById('betAmount');
+        const betInput = document.getElementById('betInput');
+        const timerEl = document.getElementById('timer');
+        const playersList = document.getElementById('playersList');
 
-        // Загрузка
-        setTimeout(() => {
-            loading.style.display = 'none';
-            gameContent.style.display = 'block';
+        // Показать контент после загрузки
+        setTimeout(function() {
+            loadingScreen.style.display = 'none';
+            mainContent.style.display = 'block';
         }, 2000);
 
-        // Симуляция игроков (как на скрине)
+        // Таймер
+        let hours = 4, minutes = 9, seconds = 25;
+        setInterval(function() {
+            seconds--;
+            if (seconds < 0) {
+                seconds = 59;
+                minutes--;
+                if (minutes < 0) {
+                    minutes = 59;
+                    hours--;
+                    if (hours < 0) {
+                        hours = 4;
+                        minutes = 9;
+                        seconds = 25;
+                    }
+                }
+            }
+            if (timerEl) {
+                timerEl.textContent = hours + ':' + 
+                    (minutes < 10 ? '0' + minutes : minutes) + ':' + 
+                    (seconds < 10 ? '0' + seconds : seconds);
+            }
+        }, 1000);
+
+        // Список игроков
         const players = [
             { name: 'JaK', bet: 50, win: 63, avatar: 'J' },
             { name: 'Семен', bet: 50, win: 63, avatar: 'С' },
@@ -481,37 +577,32 @@
         ];
 
         function updatePlayersList() {
-            const listEl = document.getElementById('playersList');
-            let html = '<div class="players-header"><span>Игрок</span><span>Ставка → Выигрыш</span></div>';
-            
-            players.forEach(p => {
-                html += `
-                    <div class="player-row">
-                        <div class="player-name">
-                            <span>${p.avatar}</span> ${p.name}
-                        </div>
-                        <div>
-                            <span class="player-bet">${p.bet}★</span> → 
-                            <span class="player-win">+${p.win}★</span>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            listEl.innerHTML = html;
+            if (!playersList) return;
+            let html = '';
+            for (let i = 0; i < players.length; i++) {
+                html += '<div class="player-row">' +
+                    '<div><span class="player-avatar">' + players[i].avatar + '</span> ' + players[i].name + '</div>' +
+                    '<div><span class="player-bet">' + players[i].bet + '★</span> → <span class="player-win">+' + players[i].win + '★</span></div>' +
+                    '</div>';
+            }
+            playersList.innerHTML = html;
         }
         updatePlayersList();
-        setInterval(updatePlayersList, 3000);
 
-        // Функция краша
-        function crash() {
+        setInterval(function() {
+            if (Math.random() > 0.5) {
+                let randomIndex = Math.floor(Math.random() * players.length);
+                players[randomIndex].win += 10;
+                updatePlayersList();
+            }
+        }, 4000);
+
+        // Функции игры
+        function crashGame() {
             gameActive = false;
-            rabbit.classList.remove('running');
-            rabbit.classList.add('crashed');
-            
-            if (interval) {
-                clearInterval(interval);
-                interval = null;
+            if (gameInterval) {
+                clearInterval(gameInterval);
+                gameInterval = null;
             }
             
             startBtn.disabled = false;
@@ -525,9 +616,8 @@
             }
         }
 
-        // Старт игры
         function startGame() {
-            const bet = parseInt(betInput.value);
+            let bet = parseInt(betInput.value);
             
             if (bet < 10) {
                 tg.showAlert('❌ Минимальная ставка 10 ★');
@@ -540,99 +630,82 @@
             }
             
             gameActive = true;
-            multiplier = 1.0;
+            currentMultiplier = 1.0;
             currentBet = bet;
             
             balance -= bet;
             balanceEl.textContent = balance;
             
-            rabbit.classList.add('running');
-            rabbit.classList.remove('crashed');
             multiplierEl.textContent = '1.00x';
-            track.style.width = '0%';
+            progressTrack.style.width = '0%';
             
             startBtn.disabled = true;
             cashoutBtn.disabled = false;
             
-            const crashPoint = (Math.random() * 8.6 + 1.4).toFixed(2);
+            let crashPoint = (Math.random() * 8.6 + 1.4).toFixed(2);
             
-            interval = setInterval(() => {
+            gameInterval = setInterval(function() {
                 if (!gameActive) return;
                 
-                multiplier += 0.01;
-                multiplierEl.textContent = multiplier.toFixed(2) + 'x';
+                currentMultiplier += 0.01;
+                multiplierEl.textContent = currentMultiplier.toFixed(2) + 'x';
                 
-                const progress = Math.min((multiplier / 5) * 100, 100);
-                track.style.width = progress + '%';
+                let progress = Math.min((currentMultiplier / 5) * 100, 100);
+                progressTrack.style.width = progress + '%';
                 
-                if (multiplier >= parseFloat(crashPoint)) {
-                    crash();
+                if (currentMultiplier >= parseFloat(crashPoint)) {
+                    crashGame();
                 }
             }, 100);
         }
 
-        // Забрать выигрыш
-        function cashout() {
+        function cashoutGame() {
             if (!gameActive) return;
-            if (multiplier < 1.4) {
+            if (currentMultiplier < 1.4) {
                 tg.showAlert('❌ Забрать можно только от 1.4x');
                 return;
             }
             
             gameActive = false;
             
-            if (interval) {
-                clearInterval(interval);
-                interval = null;
+            if (gameInterval) {
+                clearInterval(gameInterval);
+                gameInterval = null;
             }
             
-            const winAmount = Math.floor(currentBet * multiplier);
-            balance += winAmount;
+            let win = Math.floor(currentBet * currentMultiplier);
+            balance += win;
             balanceEl.textContent = balance;
             
-            tg.showAlert(`✅ Ты выиграл ${winAmount} ★ (x${multiplier.toFixed(2)})`);
+            tg.showAlert('✅ Ты выиграл ' + win + ' ★ (x' + currentMultiplier.toFixed(2) + ')');
             
-            rabbit.classList.remove('running');
             startBtn.disabled = false;
             cashoutBtn.disabled = true;
             currentBet = 0;
-            
-            players.unshift({
-                name: 'Ты',
-                bet: currentBet,
-                win: winAmount,
-                avatar: '⭐'
-            });
-            if (players.length > 8) players.pop();
-            updatePlayersList();
         }
 
         // Обработчики
         startBtn.addEventListener('click', startGame);
-        cashoutBtn.addEventListener('click', cashout);
+        cashoutBtn.addEventListener('click', cashoutGame);
 
-        betInput.addEventListener('input', () => {
-            let val = parseInt(betInput.value);
-            if (isNaN(val) || val < 10) betInput.value = 10;
-            if (val > balance) betInput.value = balance;
+        betInput.addEventListener('input', function() {
+            let val = parseInt(this.value);
+            if (isNaN(val) || val < 10) this.value = 10;
+            if (val > balance) this.value = balance;
         });
 
         // Навигация
-        function switchTab(tab) {
+        window.switchTab = function(tab) {
             if (tab === 'roulette') {
                 tg.showAlert('🎲 Временные технические работы');
             }
             
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
-            });
+            let items = document.querySelectorAll('.nav-item');
+            for (let i = 0; i < items.length; i++) {
+                items[i].classList.remove('active');
+            }
             event.currentTarget.classList.add('active');
-        }
-
-        // Получение данных от бота
-        tg.onEvent('mainButtonClicked', () => {
-            tg.close();
-        });
+        };
     </script>
 </body>
 </html>
